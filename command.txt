@@ -1,0 +1,17 @@
+- Start game
+.\adb.exe shell monkey -p com.superplanet.evilhunter -c android.intent.category.LAUNCHER 1
+
+- Screenshot
+.\adb.exe shell screencap -p /sdcard/screen.png
+
+.\adb.exe pull /sdcard/screen.png C:/work_space/project/evh_automation/screen.png
+
+.\adb.exe shell rm /sdcard/screen.png
+
+rm screen.png
+
+- Tap
+.\adb.exe shell input tap X Y
+
+- Swipe
+.\adb.exe shell input swipe X1 Y1 X2 Y2
