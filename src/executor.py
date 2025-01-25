@@ -6,7 +6,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
 from src.utils import is_game_running, capture_screenshot, tap
 from src.task import launch_game, access_game, is_in_screen, close_notification, access_colosseum, select_league, auto_check, start_colosseum
-from src.task import complete_colosseum
+from src.task import complete_colosseum, access_setting, save_data, collect_reward
 import time
 
 class Executor:
@@ -15,12 +15,12 @@ class Executor:
         self.attendance = False
         self.close_notification = False
         self.offline_reward = False
+        self.daily_quest = False
     
         # Task flags
         self.colosseum = False
         self.world_boss = False
         self.watching_ad = False
-        self.daily_quest = False
         self.tmv = False
         self.dungeon = False
         self.field_boss = False
@@ -76,5 +76,16 @@ class Executor:
                 continue
             
             print("Colosseum Task Complete!")
+        
+    def daily_quest_save_data(self):
+        """
+        There are 5 quest but 2 of them are the same everyday so 
+        this task will accomplish the 2 same quests.
+        """
+        access_setting()
+        time.sleep(0.5)
+        save_data()
+        time.sleep(0.5)
+        collect_reward()
         
             

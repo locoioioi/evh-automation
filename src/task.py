@@ -51,6 +51,120 @@ def close_notification() -> bool:
     execute_shell_command(f"rm {notification_screen_path}", use_adb=False)
     return True
 
+def access_setting() -> bool:
+    """
+    Save the data to cloud.
+    """    
+    home_path = capture_screenshot("home_screen")
+    coords = is_in_screen("./src/image/setting_button.png", home_path)
+    
+    if coords is None:
+        print("Setting button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {home_path}", use_adb=False)
+    return True
+
+def save_data() -> bool:
+    """
+    Process all the steps to save the data to the cloud.
+    Including: Open setting, choose save to google, choose google account, close setting.
+    
+    Returns:
+        bool: True if the data is saved to the cloud, False otherwise.
+    """
+    # Open setting
+    save_to_cloud_path = capture_screenshot("save_data")
+    coords = is_in_screen("./src/image/save_to_cloud.png", save_to_cloud_path)
+    
+    if coords is None:
+        print("Save to cloud button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {save_to_cloud_path}", use_adb=False)
+    time.sleep(0.5)
+    
+    # Save to google
+    save_to_google_path = capture_screenshot("save_data_google")
+    coords2 = is_in_screen("./src/image/save_to_google.png", save_to_google_path)
+    
+    time.sleep(1)
+    if coords2 is None:
+        print("Save to google button not found!")
+        return False
+    
+    x, y = coords2
+    tap(x, y)
+    execute_shell_command(f"rm {save_to_google_path}", use_adb=False)
+    time.sleep(2)
+    
+    # Choose google account
+    save_to_google_account_path = capture_screenshot("save_data_google_account")
+    coords3 = is_in_screen("./src/image/google_account.png", save_to_google_account_path)
+    
+    if coords3 is None:
+        print("Google account button not found!")
+        return False
+    
+    x, y = coords3
+    tap(x, y)
+    execute_shell_command(f"rm {save_to_google_account_path}", use_adb=False)
+    time.sleep(2.5)
+    
+    # Close setting
+    close_setting_path = capture_screenshot("close_setting")
+    coords4 = is_in_screen("./src/image/close_setting_button.png", close_setting_path)
+    
+    if coords4 is None:
+        print("Close setting button not found!")
+        return False
+    
+    x, y = coords4
+    tap(x, y)
+    
+    execute_shell_command(f"rm {close_setting_path}", use_adb=False)
+    return True
+
+def collect_reward() -> bool:
+    home_path = capture_screenshot("home_screen")
+    coords = is_in_screen("./src/image/daily_quest_button.png", home_path)
+    
+    if coords is None:
+        print("Collect reward button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {home_path}", use_adb=False)
+    
+    time.sleep(0.5)
+    quest_path = capture_screenshot("quest_screen")
+    coords2 = is_in_screen("./src/image/get_reward_save.png", quest_path)
+    
+    if coords2 is None:
+        print("Get reward button not found!")
+        return False
+    
+    x, y = coords2
+    tap(x, y)
+    
+    time.sleep(0.5)
+    coords3 = is_in_screen("./src/image/quest_screen_close.png", quest_path)
+    
+    if coords3 is None:
+        print("Close quest button not found!")
+        return False
+    
+    x, y = coords3
+    tap(x, y)
+    
+    execute_shell_command(f"rm {quest_path}", use_adb=False)
+    return True
+
 # =================================================COLOSSEUM TASKS=================================================== 
 
 def access_colosseum() -> bool:

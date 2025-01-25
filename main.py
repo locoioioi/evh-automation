@@ -8,8 +8,8 @@ from src.executor import Executor
 
 def main():
     print("Evil Hunter Tycoon Automation Start...")
-    # colosseum_path = capture_screenshot("colosseum_finish")
-    # coords = is_in_screen("./src/image/auto_colosseum_check.png", colosseum_path)
+    colosseum_path = capture_screenshot("screen")
+    # coords = is_in_screen("./src/image/setting_button.png", colosseum_path)
     # x, y = coords
     # tap(x, y)
     
@@ -17,6 +17,7 @@ def main():
     
     executor.login()
     executor.do_colosseum()
+    executor.daily_quest_save_data()
     
     
 if __name__ == "__main__":

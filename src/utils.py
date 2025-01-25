@@ -13,7 +13,6 @@ def execute_shell_command(command: str, use_adb: bool = False) -> str:
     """
     Execute a shell command.
     If 'use_adb' is True, prepend the local adb.exe path.
-    Handles errors gracefully.
     """
     try:
         # If use_adb is True, prepend adb.exe
@@ -85,7 +84,6 @@ def is_in_screen(screen_path: str, template_path: str, display_scale: float = 0.
     template = cv.imread(template_path, cv.IMREAD_UNCHANGED)
 
     if screen is None or template is None:
-        print("❌ Error: Failed to load images. Check file paths.")
         return None
 
     if screen.shape[-1] == 4:
