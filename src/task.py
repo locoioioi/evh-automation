@@ -15,7 +15,7 @@ def access_game() -> bool:
         bool: True if the game is loaded and the screen is clicked, False otherwise.
     """
     loading_screen_path = capture_screenshot("loading_screen")
-    coords = is_in_screen("./src/image/touch-to-start.png",loading_screen_path)
+    coords = is_in_screen("./src/image/login/touch-to-start.png",loading_screen_path)
         
     # Wait for the game to load 
     time.sleep(random.uniform(2, 4))
@@ -38,7 +38,7 @@ def close_notification() -> bool:
         bool: True if the notification is closed, False otherwise.
     """
     notification_screen_path = capture_screenshot("close-notification")
-    coords = is_in_screen("./src/image/close-notification-button.png", notification_screen_path)
+    coords = is_in_screen("./src/image/login/close-notification-button.png", notification_screen_path)
     
     time.sleep(10)
     if coords is None:
@@ -51,12 +51,14 @@ def close_notification() -> bool:
     execute_shell_command(f"rm {notification_screen_path}", use_adb=False)
     return True
 
+# =================================================DAILY TASKS===================================================
+
 def access_setting() -> bool:
     """
     Save the data to cloud.
     """    
     home_path = capture_screenshot("home_screen")
-    coords = is_in_screen("./src/image/setting_button.png", home_path)
+    coords = is_in_screen("./src/image/daily_task/setting_button.png", home_path)
     
     if coords is None:
         print("Setting button not found!")
@@ -77,7 +79,7 @@ def save_data() -> bool:
     """
     # Open setting
     save_to_cloud_path = capture_screenshot("save_data")
-    coords = is_in_screen("./src/image/save_to_cloud.png", save_to_cloud_path)
+    coords = is_in_screen("./src/image/daily_task/save_to_cloud.png", save_to_cloud_path)
     
     if coords is None:
         print("Save to cloud button not found!")
@@ -90,7 +92,7 @@ def save_data() -> bool:
     
     # Save to google
     save_to_google_path = capture_screenshot("save_data_google")
-    coords2 = is_in_screen("./src/image/save_to_google.png", save_to_google_path)
+    coords2 = is_in_screen("./src/image/daily_task/save_to_google.png", save_to_google_path)
     
     time.sleep(1)
     if coords2 is None:
@@ -104,7 +106,7 @@ def save_data() -> bool:
     
     # Choose google account
     save_to_google_account_path = capture_screenshot("save_data_google_account")
-    coords3 = is_in_screen("./src/image/google_account.png", save_to_google_account_path)
+    coords3 = is_in_screen("./src/image/daily_task/google_account.png", save_to_google_account_path)
     
     if coords3 is None:
         print("Google account button not found!")
@@ -117,7 +119,7 @@ def save_data() -> bool:
     
     # Close setting
     close_setting_path = capture_screenshot("close_setting")
-    coords4 = is_in_screen("./src/image/close_setting_button.png", close_setting_path)
+    coords4 = is_in_screen("./src/image/daily_task/close_setting_button.png", close_setting_path)
     
     if coords4 is None:
         print("Close setting button not found!")
@@ -131,7 +133,7 @@ def save_data() -> bool:
 
 def collect_reward() -> bool:
     home_path = capture_screenshot("home_screen")
-    coords = is_in_screen("./src/image/daily_quest_button.png", home_path)
+    coords = is_in_screen("./src/image/daily_task/daily_quest_button.png", home_path)
     
     if coords is None:
         print("Collect reward button not found!")
@@ -143,18 +145,19 @@ def collect_reward() -> bool:
     
     time.sleep(0.5)
     quest_path = capture_screenshot("quest_screen")
-    coords2 = is_in_screen("./src/image/get_reward_save.png", quest_path)
+    coords2 = is_in_screen("./src/image/daily_task/get_reward_save.png", quest_path)
+    coords3 = is_in_screen("./src/image/daily_task/quest_screen_close.png", quest_path)
     
     if coords2 is None:
-        print("Get reward button not found!")
+        print("Already collected reward!")
+        x, y = coords3
+        tap(x, y)
         return False
     
     x, y = coords2
     tap(x, y)
     
-    time.sleep(0.5)
-    coords3 = is_in_screen("./src/image/quest_screen_close.png", quest_path)
-    
+    time.sleep(0.5)    
     if coords3 is None:
         print("Close quest button not found!")
         return False
@@ -169,7 +172,7 @@ def collect_reward() -> bool:
 
 def access_colosseum() -> bool:
     colosseum_path = capture_screenshot("colosseum_screen")
-    coords = is_in_screen("./src/image/colosseum_button.png", colosseum_path)
+    coords = is_in_screen("./src/image/colosseum/colosseum_button.png", colosseum_path)
     
     if coords is None:
         print("Colosseum button not found!")
@@ -182,7 +185,7 @@ def access_colosseum() -> bool:
 
 def select_league() -> bool:
     league_path = capture_screenshot("league_colosseum_screen")
-    coords = is_in_screen("./src/image/select_league_colosseum_button.png", league_path)
+    coords = is_in_screen("./src/image/colosseum/select_league_colosseum_button.png", league_path)
     
     if coords is None:
         print("League button not found!")
@@ -195,7 +198,7 @@ def select_league() -> bool:
 
 def auto_check() -> bool:
     colosseum_path = capture_screenshot("colosseum_screen")
-    coords = is_in_screen("./src/image/auto_colosseum_check.png", colosseum_path)
+    coords = is_in_screen("./src/image/colosseum/auto_colosseum_check.png", colosseum_path)
     
     if coords is None:
         print("Auto colosseum check button not found!")
@@ -208,7 +211,7 @@ def auto_check() -> bool:
 
 def start_colosseum() -> bool:
     colosseum_path = capture_screenshot("colosseum_screen")
-    coords = is_in_screen("./src/image/start_colosseum_button.png", colosseum_path)
+    coords = is_in_screen("./src/image/colosseum/start_colosseum_button.png", colosseum_path)
     
     if coords is None:
         print("Start colosseum button not found!")
@@ -221,14 +224,14 @@ def start_colosseum() -> bool:
 
 def complete_colosseum() -> bool:
     colosseum_path = capture_screenshot("colosseum_finish")
-    coords = is_in_screen("./src/image/colosseum_finish.png", colosseum_path)
+    coords = is_in_screen("./src/image/colosseum/colosseum_finish.png", colosseum_path)
     
     if coords is None:
         print("Colosseum complete button not found!")
         return False
     
     close_button_path = capture_screenshot("close_colosseum")
-    coords2 = is_in_screen("./src/image/close_colosseum_button.png", close_button_path)
+    coords2 = is_in_screen("./src/image/colosseum/close_colosseum_button.png", close_button_path)
         
     if coords2 is None:
         print("Close colosseum button not found!")

@@ -8,15 +8,15 @@ from src.executor import Executor
 
 def main():
     print("Evil Hunter Tycoon Automation Start...")
-    colosseum_path = capture_screenshot("screen")
+    # colosseum_path = capture_screenshot("screen")
     # coords = is_in_screen("./src/image/setting_button.png", colosseum_path)
     # x, y = coords
     # tap(x, y)
     
     executor = Executor()
     
-    executor.login()
-    executor.do_colosseum()
+    # executor.login()
+    # executor.do_colosseum()
     executor.daily_quest_save_data()
     
     
