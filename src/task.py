@@ -420,4 +420,105 @@ def collect_dungeon_reward() -> bool:
         return True
     
     
+# =================================================WATCH AD===================================================
+def find_elf_ad() -> bool:
+    print("Detecting ad available...")
+    home_path = capture_screenshot("home_screen")
+    coords = is_in_screen("./src/image/watch_ad/ad_btn.png", home_path)
+    
+    if coords is None:
+        print("Elf ad button not found!")
+        return False
+    
+    print("Ad is available!")
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {home_path}", use_adb=False)
+    
+    print("Finding the elf ad...")
+    while True:
+        home_path = capture_screenshot("home_screen")
+        coords = is_in_screen("./src/image/watch_ad/ad_elf_1.png", home_path)
         
+        if (coords != None):
+            x, y = coords
+            tap(x, y) 
+            print("Elf ad found!")
+            execute_shell_command(f"rm {home_path}", use_adb=False)
+            break
+        
+        coords2 = is_in_screen("./src/image/watch_ad/ad_elf_2.png", home_path)
+        
+        if (coords2 != None):
+            x, y = coords2
+            tap(x, y)
+            print("Elf ad found!")
+            execute_shell_command(f"rm {home_path}", use_adb=False)    
+            break
+            
+        coords3 = is_in_screen("./src/image/watch_ad/ad_elf_3.png", home_path)
+        
+        if (coords3 != None):
+            x, y = coords3
+            tap(x, y)
+            print("Elf ad found!")
+            execute_shell_command(f"rm {home_path}", use_adb=False)
+            break
+    return True
+        
+        
+def watch_ad() -> bool:
+    """
+    Watch the ad.
+    """
+    reward_selection_path = capture_screenshot("reward_selection")
+    coords = is_in_screen("./src/image/watch_ad/watch_ad_btn.png", reward_selection_path)
+    
+    if coords is None:
+        print("Watch ad button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {reward_selection_path}", use_adb=False)
+    
+    while True:
+        ad_path = capture_screenshot("ad_screen")
+        
+        # ad type 1
+        coords2 = is_in_screen("./src/image/watch_ad/reward_granted_2.png", ad_path)
+        
+        if coords2 != None:
+            coords3 = is_in_screen("./src/image/watch_ad/close_ad_2.png", ad_path)
+            
+            if coords3 != None:
+                x, y = coords3
+                tap(x, y)
+                
+                execute_shell_command(f"rm {ad_path}", use_adb=False)
+                break
+        
+        # ad type 2
+        coords3 = is_in_screen("./src/image/watch_ad/continue_3.png", ad_path)
+        
+        if coords3 != None:
+            x, y = coords3
+            tap(x, y)
+            
+            while True:
+                close_ad = capture_screenshot("close_ad")
+                coords4 = is_in_screen("./src/image/watch_ad/close_ad_3.png", close_ad)
+                
+                if coords4 != None:
+                    x, y = coords4
+                    tap(x, y)
+                    
+                    execute_shell_command(f"rm {ad_path}", use_adb=False)
+                    execute_shell_command(f"rm {close_ad}", use_adb=False)
+                    break
+                time.sleep(1)
+
+            break
+        
+        time.sleep(5)
+    return True

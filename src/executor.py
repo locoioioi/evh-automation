@@ -19,7 +19,7 @@ class Executor:
         # Task flags
         self.colosseum = False
         self.world_boss = False
-        self.watching_ad = False
+        self.watching_ad = 0
         self.tmv = False
         self.dungeon = False
         self.field_boss = False
@@ -95,7 +95,16 @@ class Executor:
     def go_dungeon(self, times = 1):
         """
         Execute the dungeon task.
+        
+        Input:
+        - times: int, default 1, the number of times the dungeon will be executed.
+        
+        Returns:
+        - None but the task will be executed.
         """
+        
+        # TODO: Make this function more flexible. Currently it just support fixed level like 276.
+        # TODO: Make it find the input level and choose that
         print("Dungeon Tasks Start!")
         for i in range(times):
             access_dungeon()
@@ -105,3 +114,12 @@ class Executor:
             print(f"Finish {i + 1} times dungeon.")
             time.sleep(60)
             print("Wait for 60 seconds before next dungeon.")
+            
+    def watch_ad(self):
+        """
+        Execute the watching ad task.
+        """
+        # TODO: Check more variants of the elf
+        find_elf_ad()
+        time.sleep(1)
+        watch_ad()

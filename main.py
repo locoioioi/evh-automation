@@ -21,7 +21,8 @@ def main():
     # executor.daily_quest_save_data()
     # time.sleep(2)
     # executor.do_colosseum()
-    executor.go_dungeon(10)
+    # executor.go_dungeon(10)
+    executor.watch_ad()
     
     
 if __name__ == "__main__":
