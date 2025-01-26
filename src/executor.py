@@ -5,8 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
 from src.utils import is_game_running, capture_screenshot, tap
-from src.task import launch_game, access_game, is_in_screen, close_notification, access_colosseum, select_league, auto_check, start_colosseum
-from src.task import complete_colosseum, access_setting, save_data, collect_reward
+from src.task import *
 import time
 
 class Executor:
@@ -29,8 +28,6 @@ class Executor:
         """
         Open Evil Hunter Tycoon on LDPlayer using ADB.
         """
-        # TODO: Implement attendance check.
-        # TODO: offline reward check.
         launch_game()
         
         while self.is_login == False:
@@ -45,6 +42,13 @@ class Executor:
                 if self.close_notification == False:
                     continue
                 
+                time.sleep(2)
+                self.attendance = check_attendance()
+                
+                time.sleep(2)
+                self.offline_reward = check_offline_reward()
+                
+                
         self.is_login = is_game_running()
         print("Login Success!")
         
@@ -56,10 +60,9 @@ class Executor:
         # TODO: Handle collect reward.
         # TODO: Handle start new season.
         access_colosseum() 
-        time.sleep(1)
+        time.sleep(0.5)
         select_league()
-        time.sleep(1)
-        
+        time.sleep(0.5)
         if (complete_colosseum() == True):
             print("Colosseum Task Complete!")
             self.colosseum = True
@@ -70,6 +73,7 @@ class Executor:
         start_colosseum()
         
         while self.colosseum == False:
+            time.sleep(30)
             self.colosseum = complete_colosseum()
             
             if self.colosseum == False:
@@ -88,4 +92,16 @@ class Executor:
         time.sleep(0.5)
         collect_reward()
         
-            
+    def go_dungeon(self, times = 1):
+        """
+        Execute the dungeon task.
+        """
+        print("Dungeon Tasks Start!")
+        for i in range(times):
+            access_dungeon()
+            time.sleep(0.5)
+            start_dungeon()
+            collect_dungeon_reward()
+            print(f"Finish {i + 1} times dungeon.")
+            time.sleep(60)
+            print("Wait for 60 seconds before next dungeon.")

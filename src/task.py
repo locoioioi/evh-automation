@@ -40,7 +40,7 @@ def close_notification() -> bool:
     notification_screen_path = capture_screenshot("close-notification")
     coords = is_in_screen("./src/image/login/close-notification-button.png", notification_screen_path)
     
-    time.sleep(10)
+    time.sleep(5)
     if coords is None:
         print("failed to close notification!")
         return False
@@ -49,6 +49,59 @@ def close_notification() -> bool:
     tap(x, y)
     
     execute_shell_command(f"rm {notification_screen_path}", use_adb=False)
+    return True
+
+def check_attendance() -> bool:
+    """
+    Check the attendance in the game.
+    
+    Returns:
+        bool: True if the attendance is checked, False otherwise.
+    """
+    attendance_path = capture_screenshot("attendance")
+    coords = is_in_screen("./src/image/login/attendance_button.png", attendance_path)
+    
+    if coords is None:
+        print("Attendance has been checked!")
+        execute_shell_command(f"rm {attendance_path}", use_adb=False)
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    
+    execute_shell_command(f"rm {attendance_path}", use_adb=False)
+    return True
+
+def check_offline_reward() -> bool:
+    """
+    Check the offline reward in the game.
+    
+    Returns:
+        bool: True if the offline reward is checked, False otherwise.
+    """
+    offline_reward_path = capture_screenshot("offline_reward")
+    coords = is_in_screen("./src/image/login/get-offline-reward-button.png", offline_reward_path)
+    
+    if coords is None:
+        print("Offline reward has been collected!")
+        execute_shell_command(f"rm {offline_reward_path}", use_adb=False)
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    
+    execute_shell_command(f"rm {offline_reward_path}", use_adb=False)
+    
+    close_reward_path = capture_screenshot("close_reward")
+    coords2 = is_in_screen("./src/image/login/close-offline-reward-button.png", close_reward_path)
+    
+    if coords2 is None:
+        print("Close offline reward button not found!")
+        return False
+    
+    x, y = coords2
+    tap(x, y)
+    execute_shell_command(f"rm {close_reward_path}", use_adb=False)
     return True
 
 # =================================================DAILY TASKS===================================================
@@ -115,7 +168,7 @@ def save_data() -> bool:
     x, y = coords3
     tap(x, y)
     execute_shell_command(f"rm {save_to_google_account_path}", use_adb=False)
-    time.sleep(2.5)
+    time.sleep(4)
     
     # Close setting
     close_setting_path = capture_screenshot("close_setting")
@@ -152,6 +205,7 @@ def collect_reward() -> bool:
         print("Already collected reward!")
         x, y = coords3
         tap(x, y)
+        execute_shell_command(f"rm {quest_path}", use_adb=False)
         return False
     
     x, y = coords2
@@ -243,3 +297,127 @@ def complete_colosseum() -> bool:
     execute_shell_command(f"rm {close_button_path}", use_adb=False)
     execute_shell_command(f"rm {colosseum_path}", use_adb=False)
     return True
+
+# ================================================= DUNGEON ===================================================
+
+def access_dungeon() -> bool:
+    print("Accessing dungeon...")
+    home_path = capture_screenshot("home_screen")
+    coords = is_in_screen("./src/image/dungeon/dungeon_btn.png", home_path)
+    
+    if coords is None:
+        print("Dungeon button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {home_path}", use_adb=False)
+    return True 
+
+def start_dungeon() -> bool:
+    start_dungeon_path = capture_screenshot("start_dungeon")
+    coords = is_in_screen("./src/image/dungeon/dungeon_start.png", start_dungeon_path)
+    
+    if coords is None:
+        print("Start dungeon button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {start_dungeon_path}", use_adb=False)
+    time.sleep(0.5)
+    
+    select_stage_path = capture_screenshot("select_stage")
+    coords2 = is_in_screen("./src/image/dungeon/select_stage.png", select_stage_path)
+    
+    if coords2 is None:
+        print("Select stage button not found!")
+        return False
+    
+    x, y = coords2
+    tap(x, y)
+    execute_shell_command(f"rm {select_stage_path}", use_adb=False)
+    time.sleep(0.5)
+    
+    enter_dungeon_path = capture_screenshot("enter_dungeon")
+    coords3 = is_in_screen("./src/image/dungeon/enter_dungeon.png", enter_dungeon_path)
+    
+    if coords3 is None:
+        print("Enter dungeon button not found!")
+        return False
+    
+    x, y = coords3
+    tap(x, y)
+    execute_shell_command(f"rm {enter_dungeon_path}", use_adb=False)
+    time.sleep(0.5)
+    
+    for i in range(5):
+        index = i + 1
+        hunter_path = capture_screenshot(f"select_hunter_{index}")
+        coords3 = is_in_screen(f"./src/image/dungeon/hunter_{index}.png", hunter_path)
+        
+        if coords3 is None:
+            print(f"Select hunter {index} button not found!")
+            return False
+        
+        x, y = coords3
+        tap(x, y)
+        execute_shell_command(f"rm {hunter_path}", use_adb=False)
+        
+    depart_path = capture_screenshot("depart_dungeon")
+    coords4 = is_in_screen("./src/image/dungeon/dungeon_departure.png", depart_path)
+    
+    if coords4 is None:
+        print("Depart dungeon button not found!")
+        return False
+    
+    x, y = coords4
+    tap(x, y)
+    execute_shell_command(f"rm {depart_path}", use_adb=False)
+    return True
+
+def collect_dungeon_reward() -> bool:
+    print("Check dungeon reward...")
+    while True:
+        time.sleep(15)
+        dungeon_reward_path = capture_screenshot("dungeon_reward")
+        coords = is_in_screen("./src/image/dungeon/dungeon_reward.png", dungeon_reward_path)
+        
+        if (coords is None):
+            continue
+        
+        print("Collecting dungeon reward...")
+        x, y = coords
+        tap(x, y)
+        execute_shell_command(f"rm {dungeon_reward_path}", use_adb=False)
+        
+        while True:
+            time.sleep(2)
+            dungeon_exit = capture_screenshot("dungeon_exit")
+            coords2 = is_in_screen("./src/image/dungeon/exit_dungeon.png", dungeon_exit)
+
+            if coords2 is None:
+                continue
+            
+            x, y = coords2
+            tap(x, y)
+            execute_shell_command(f"rm {dungeon_exit}", use_adb=False)
+            break
+        
+        while True:
+            time.sleep(2)
+            close_dungeon = capture_screenshot("close_dungeon")
+            coords3 = is_in_screen("./src/image/dungeon/close_dungeon_btn.png", close_dungeon)
+            
+            if coords3 is None:
+                continue
+            
+            x, y = coords3
+            tap(x, y)
+            execute_shell_command(f"rm {close_dungeon}", use_adb=False)
+            break
+
+        return True
+    
+    
+        
