@@ -59,15 +59,39 @@ class Executor:
         
         # TODO: Handle collect reward.
         # TODO: Handle start new season.
+        new_season = True # Flag to check if the game start new season.
+        # Access the colosseum.
         access_colosseum() 
         time.sleep(0.5)
         select_league()
-        time.sleep(0.5)
+        time.sleep(1)
+                
         if (complete_colosseum() == True):
             print("Colosseum Task Complete!")
             self.colosseum = True
             return
         
+        # Handle when the game start new league.
+        if (collect_colosseum_reward() == True):
+            new_season = True
+            print("Collect reward successful! Let's start new season.")
+
+        if (new_season == True):
+            start_new_season = False
+            end_new_season = False
+            print("Start new season...")
+            while start_new_season == False:
+                start_new_season = start_colosseum_new_season() 
+                time.sleep(2)
+                                
+            while end_new_season == False:
+                end_new_season = end_colosseum_new_season()
+                time.sleep(10)
+                
+            print("End new season...! Enter the league.")            
+            time.sleep(5)
+        
+        # Handle standard colosseum task.
         auto_check()
         time.sleep(0.5)
         start_colosseum()

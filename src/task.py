@@ -298,6 +298,44 @@ def complete_colosseum() -> bool:
     execute_shell_command(f"rm {colosseum_path}", use_adb=False)
     return True
 
+def collect_colosseum_reward() -> bool:
+    reward_path = capture_screenshot("colosseum_reward")
+    coords = is_in_screen("./src/image/colosseum/colosseum_reward.png", reward_path)
+    
+    if coords != None:
+        x, y = coords
+        tap(x, y)
+        execute_shell_command(f"rm {reward_path}", use_adb=False)
+        return True
+    
+    return False
+
+def start_colosseum_new_season() -> bool:
+    check = auto_check()
+    if check == False:
+        return False
+    
+    new_season_path = capture_screenshot("new_season_colosseum")
+    coords = is_in_screen("./src/image/colosseum/colosseum_new_season_start.png", new_season_path)
+    
+    if coords is None:
+        print("New season button not found!")
+        return False
+    
+    x, y = coords
+    tap(x, y)
+    execute_shell_command(f"rm {new_season_path}", use_adb=False)
+    return True
+
+def end_colosseum_new_season() -> bool:
+    start_league_path = capture_screenshot("start_league_colosseum")
+    coords = is_in_screen("./src/image/colosseum/start_colosseum_button.png", start_league_path)
+    
+    if coords is None:
+        print("Start league button not found!")
+        return False
+    
+    return True
 # ================================================= DUNGEON ===================================================
 
 def access_dungeon() -> bool:
@@ -325,7 +363,7 @@ def start_dungeon() -> bool:
     x, y = coords
     tap(x, y)
     execute_shell_command(f"rm {start_dungeon_path}", use_adb=False)
-    time.sleep(0.5)
+    time.sleep(1.3)
     
     select_stage_path = capture_screenshot("select_stage")
     coords2 = is_in_screen("./src/image/dungeon/select_stage.png", select_stage_path)

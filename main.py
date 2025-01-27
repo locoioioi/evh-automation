@@ -16,12 +16,13 @@ def main():
     
     executor = Executor()
     
-    # executor.login()
+    executor.login()
     # time.sleep(2)
     # executor.daily_quest_save_data()
-    # time.sleep(2)
+    time.sleep(2)
     # executor.do_colosseum()
-    # executor.go_dungeon(10)
+    # time.sleep(2)
+    # executor.go_dungeon(15)
     executor.watch_ad()
     
     
