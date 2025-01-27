@@ -460,55 +460,44 @@ def collect_dungeon_reward() -> bool:
     
 # =================================================WATCH AD===================================================
 def find_elf_ad() -> bool:
-    print("Detecting ad available...")
-    home_path = capture_screenshot("home_screen")
-    coords = is_in_screen("./src/image/watch_ad/ad_btn.png", home_path)
-    
-    if coords is None:
-        print("Elf ad button not found!")
-        return False
-    
-    print("Ad is available!")
-    x, y = coords
-    tap(x, y)
-    execute_shell_command(f"rm {home_path}", use_adb=False)
-    
-    print("Finding the elf ad...")
     while True:
+        print("Detecting ad available...")
         home_path = capture_screenshot("home_screen")
-        coords = is_in_screen("./src/image/watch_ad/ad_elf_1.png", home_path)
+        coords = is_in_screen("./src/image/watch_ad/ad_btn.png", home_path)
         
-        if (coords != None):
-            x, y = coords
-            tap(x, y) 
-            print("Elf ad found!")
-            execute_shell_command(f"rm {home_path}", use_adb=False)
-            break
+        if coords is None:
+            print("Elf ad button not found!")
+            return False
         
-        coords2 = is_in_screen("./src/image/watch_ad/ad_elf_2.png", home_path)
+        print("Ad is available!")
+        x, y = coords
+        tap(x, y)
+        execute_shell_command(f"rm {home_path}", use_adb=False)
         
-        if (coords2 != None):
-            x, y = coords2
-            tap(x, y)
-            print("Elf ad found!")
-            execute_shell_command(f"rm {home_path}", use_adb=False)    
-            break
+        print("Finding the elf ad...")
+        home_screen_watch_ad = capture_screenshot("home_screen_watch_ad")
+        
+        for i in range(15):
+            index = i + 1
+            elf_path = capture_screenshot(f"elf_ad_{index}")
+            coords = is_in_screen(f"./src/image/watch_ad/ad_elf_{index}.png", elf_path, 0.8)
             
-        coords3 = is_in_screen("./src/image/watch_ad/ad_elf_3.png", home_path)
-        
-        if (coords3 != None):
-            x, y = coords3
-            tap(x, y)
-            print("Elf ad found!")
-            execute_shell_command(f"rm {home_path}", use_adb=False)
-            break
-    return True
+            execute_shell_command(f"rm {elf_path}", use_adb=False)
+            if (coords != None):
+                x, y = coords
+                tap(x, y)
+                print("Elf ad found!")
+                execute_shell_command(f"rm {home_screen_watch_ad}", use_adb=False)
+                return True
+            
+            print(f"Elf ad ver {index} not found!")
         
         
 def watch_ad() -> bool:
     """
     Watch the ad.
     """
+    # TODO: Update more variants of the ad
     reward_selection_path = capture_screenshot("reward_selection")
     coords = is_in_screen("./src/image/watch_ad/watch_ad_btn.png", reward_selection_path)
     
@@ -534,6 +523,17 @@ def watch_ad() -> bool:
                 tap(x, y)
                 
                 execute_shell_command(f"rm {ad_path}", use_adb=False)
+                
+                # Handle case where the google play pop up
+                double_close_path = capture_screenshot("double_close_ad")
+                coords4 = is_in_screen("./src/image/watch_ad/close_ad_2.png", double_close_path)
+                
+                if coords4 != None:
+                    x, y = coords4
+                    tap(x, y)
+                    
+                    execute_shell_command(f"rm {double_close_path}", use_adb=False)
+
                 break
         
         # ad type 2

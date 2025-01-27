@@ -63,7 +63,7 @@ def capture_screenshot(name: str = "screenshot") -> str:
 
     return screenshot_path
 
-def is_in_screen(screen_path: str, template_path: str, display_scale: float = 0.5):
+def is_in_screen(screen_path: str, template_path: str, confidence: float = 0.8):
     """
     Detects a template inside a screen image using OpenCV's template matching.
     Uses TM_CCOEFF_NORMED for best accuracy.
@@ -109,13 +109,11 @@ def is_in_screen(screen_path: str, template_path: str, display_scale: float = 0.
     min_val, max_val, min_loc, max_loc = cv.minMaxLoc(result)
     match_loc = max_loc
 
-    confidence_threshold = 0.8
-
     # Get center of detected region
     center_x = int(match_loc[0] + w // 2)
     center_y = int(match_loc[1] + h // 2)
 
-    if max_val < confidence_threshold:
+    if max_val < confidence:
         return None
     
     return center_x, center_y

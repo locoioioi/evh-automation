@@ -139,11 +139,20 @@ class Executor:
             time.sleep(60)
             print("Wait for 60 seconds before next dungeon.")
             
-    def watch_ad(self):
+    def watch_ad(self) -> bool:
         """
         Execute the watching ad task.
         """
         # TODO: Check more variants of the elf
-        find_elf_ad()
+        find = find_elf_ad()
+        
+        if find == False:
+            return False
+        
         time.sleep(1)
-        watch_ad()
+        watch = watch_ad()
+        
+        if watch == False:
+            return False
+        
+        return True

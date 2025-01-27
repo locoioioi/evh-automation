@@ -9,22 +9,27 @@ import time
 
 def main():
     print("Evil Hunter Tycoon Automation Start...")
-    # colosseum_path = capture_screenshot("screen")
+    colosseum_path = capture_screenshot("screen5")
     # coords = is_in_screen("./src/image/setting_button.png", colosseum_path)
     # x, y = coords
     # tap(x, y)
     
     executor = Executor()
-    
-    executor.login()
+
+    # executor.login()
     # time.sleep(2)
     # executor.daily_quest_save_data()
-    time.sleep(2)
+    # time.sleep(2)
     # executor.do_colosseum()
     # time.sleep(2)
     # executor.go_dungeon(15)
-    executor.watch_ad()
-    
+    # ad_watch = 0
+    # while ad_watch < 12:
+    #     success = executor.watch_ad()
+    #     if success:
+    #         ad_watch += 1
+    #         print(f"Watching AD {ad_watch}/12")
+    #     time.sleep(20)
     
 if __name__ == "__main__":
     main()
