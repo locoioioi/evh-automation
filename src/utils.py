@@ -123,3 +123,55 @@ def tap(x: int, y: int):
     Tap on the screen at the given X, Y coordinates.
     """
     execute_shell_command(f"shell input tap {x} {y}", use_adb=True)
+    
+def is_in_screen_v2(screen_path: str, template_path: str):
+    """
+    Have the same functionality with is_in_screen but utilize feature matching for detect object that has too much variants.
+    
+    Args:
+        screen_path (str): Path to the screen image.
+        template_path (str): Path to the template image.
+        
+    Returns:
+        tuple[int, int] | None: Middle X, Y coordinates of the detected template,
+                                or None if the template is not found.
+    """
+    screen = cv.imread(screen_path, cv.IMREAD_GRAYSCALE)
+    template = cv.imread(template_path, cv.IMREAD_GRAYSCALE)
+
+    if screen is None or template is None:
+        print("❌ Error: One or both images could not be loaded!")
+        return None
+
+    # Initiate SIFT detector
+    sift = cv.SIFT_create()
+
+    # Find keypoints and descriptors with SIFT
+    kp1, des1 = sift.detectAndCompute(screen, None)
+    kp2, des2 = sift.detectAndCompute(template, None)
+
+    if des1 is None or des2 is None:
+        print("❌ Not enough keypoints detected!")
+        return None
+
+    # BFMatcher with default params
+    bf = cv.BFMatcher()
+    matches = bf.knnMatch(des1, des2, k=2)
+
+    # Apply Lowe’s ratio test
+    good = []
+    for m, n in matches:
+        if m.distance < 0.65 * n.distance:  # Stricter ratio test
+            good.append(m)  # Store as flat list (not list of lists)
+
+    if len(good) < 10:
+        print("❌ Not enough good matches")
+        return None
+
+    # Select the best match based on the lowest distance
+    best_match = min(good, key=lambda x: x.distance)
+
+    coords = kp2[best_match.trainIdx].pt  # (x, y)
+
+    print(f"✅ Best keypoint selected: {coords} (lowest distance = {best_match.distance:.2f})")
+    return coords

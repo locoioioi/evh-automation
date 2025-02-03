@@ -1,7 +1,7 @@
 import sys
 import os
 import time
-from utils import launch_game, capture_screenshot, is_in_screen, tap, execute_shell_command
+from utils import *
 import random
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
@@ -157,18 +157,20 @@ def save_data() -> bool:
     execute_shell_command(f"rm {save_to_google_path}", use_adb=False)
     time.sleep(2)
     
-    # Choose google account
-    save_to_google_account_path = capture_screenshot("save_data_google_account")
-    coords3 = is_in_screen("./src/image/daily_task/google_account.png", save_to_google_account_path)
-    
-    if coords3 is None:
-        print("Google account button not found!")
-        return False
-    
-    x, y = coords3
-    tap(x, y)
-    execute_shell_command(f"rm {save_to_google_account_path}", use_adb=False)
-    time.sleep(4)
+    while True:
+        # Choose google account
+        save_to_google_account_path = capture_screenshot("save_data_google_account")
+        coords3 = is_in_screen("./src/image/daily_task/google_account.png", save_to_google_account_path)
+        
+        if coords3 is None:
+            print("Google account button not found!")
+            continue
+        
+        x, y = coords3
+        tap(x, y)
+        execute_shell_command(f"rm {save_to_google_account_path}", use_adb=False)
+        time.sleep(4)
+        break
     
     # Close setting
     close_setting_path = capture_screenshot("close_setting")
@@ -477,20 +479,29 @@ def find_elf_ad() -> bool:
         print("Finding the elf ad...")
         home_screen_watch_ad = capture_screenshot("home_screen_watch_ad")
         
-        for i in range(15):
+        for i in range(4):
             index = i + 1
-            elf_path = capture_screenshot(f"elf_ad_{index}")
-            coords = is_in_screen(f"./src/image/watch_ad/ad_elf_{index}.png", elf_path, 0.8)
-            
-            execute_shell_command(f"rm {elf_path}", use_adb=False)
+            elf_path = capture_screenshot(f"ad_elf_{index}")
+            coords = is_in_screen_v2(f"./src/image/watch_ad/ad_elf_{index}.png", elf_path)            
             if (coords != None):
                 x, y = coords
                 tap(x, y)
+                
+                time.sleep(1)
+                check = capture_screenshot(f"check_find_elf_{index}")
+                coords = is_in_screen(f"./src/image/watch_ad/watch_ad_btn.png", check)
+                
+                if coords is None:
+                    print("Elf ad found but miss click!")
+                    execute_shell_command(f"rm {check}", use_adb=False)
+                    continue
+                
                 print("Elf ad found!")
+                execute_shell_command(f"rm {elf_path}", use_adb=False)
                 execute_shell_command(f"rm {home_screen_watch_ad}", use_adb=False)
                 return True
             
-            print(f"Elf ad ver {index} not found!")
+            execute_shell_command(f"rm {elf_path}", use_adb=False)
         
         
 def watch_ad() -> bool:
@@ -516,6 +527,7 @@ def watch_ad() -> bool:
         coords2 = is_in_screen("./src/image/watch_ad/reward_granted_2.png", ad_path)
         
         if coords2 != None:
+            print("Watching ad ver 1...")
             coords3 = is_in_screen("./src/image/watch_ad/close_ad_2.png", ad_path)
             
             if coords3 != None:
@@ -540,6 +552,7 @@ def watch_ad() -> bool:
         coords3 = is_in_screen("./src/image/watch_ad/continue_3.png", ad_path)
         
         if coords3 != None:
+            print("Watching ad ver 2...")
             x, y = coords3
             tap(x, y)
             
@@ -557,6 +570,24 @@ def watch_ad() -> bool:
                 time.sleep(1)
 
             break
+        
+        # ad type 3
+        coords4 = is_in_screen("./src/image/watch_ad/reward_granted_3.png", ad_path)
+        
+        if coords4 != None:
+            print("Watching ad ver 3...")
+            while True:
+                close_ad = capture_screenshot("close_ad")
+                coords5 = is_in_screen("./src/image/watch_ad/close_ad_2.png", close_ad)
+                
+                if coords5 != None:
+                    x, y = coords5
+                    tap(x, y)
+                    
+                    execute_shell_command(f"rm {ad_path}", use_adb=False)
+                    execute_shell_command(f"rm {close_ad}", use_adb=False)
+                    break
+                time.sleep(1)
         
         time.sleep(5)
     return True

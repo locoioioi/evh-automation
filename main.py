@@ -3,7 +3,7 @@ import os
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
-from src.utils import is_game_running, capture_screenshot, is_in_screen, tap
+from src.utils import *
 from src.executor import Executor
 import time
 
@@ -23,13 +23,13 @@ def main():
     # executor.do_colosseum()
     # time.sleep(2)
     # executor.go_dungeon(15)
-    # ad_watch = 0
-    # while ad_watch < 12:
-    #     success = executor.watch_ad()
-    #     if success:
-    #         ad_watch += 1
-    #         print(f"Watching AD {ad_watch}/12")
-    #     time.sleep(20)
+    ad_watch = 0
+    while ad_watch < 15:
+        success = executor.watch_ad()
+        if success:
+            ad_watch += 1
+            print(f"Watching AD {ad_watch}/12")
+        time.sleep(20)
     
 if __name__ == "__main__":
     main()

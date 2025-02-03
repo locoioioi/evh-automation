@@ -59,7 +59,7 @@ class Executor:
         
         # TODO: Handle collect reward.
         # TODO: Handle start new season.
-        new_season = True # Flag to check if the game start new season.
+        new_season = False # Flag to check if the game start new season.
         # Access the colosseum.
         access_colosseum() 
         time.sleep(0.5)
